@@ -11,12 +11,12 @@ function Callback() {
   let query = useQuery();
   let loginKey = query.get('loginKey');
   let loginToken = query.get('loginToken');
-
+  console.log(loginKey, loginToken);
   // Checks if we have loginToken and Window object
   if (loginToken && loginKey && window && localStorage) {
-    const codeMeshTokens = JSON.parse(localStorage.getItem('codeMeshTokens')) || {};
-    codeMeshTokens[`x-${loginKey}`] = loginToken
-    localStorage.setItem("codeMeshTokens", JSON.stringify(codeMeshTokens));
+    const theCodeMeshTokens = JSON.parse(localStorage.getItem('theCodeMeshTokens')) || {};
+    theCodeMeshTokens[loginKey] = loginToken
+    localStorage.setItem("theCodeMeshTokens", JSON.stringify(theCodeMeshTokens));
   }
 
   return <React.Fragment />;

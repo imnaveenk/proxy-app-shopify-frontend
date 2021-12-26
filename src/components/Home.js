@@ -1,8 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-
-const triggerURL = "https://api.thecodemesh.online/api/v1/trigger/proxy/617ffaafe1761600127f9be4/admin/products.json?shop=testtheme34.myshopify.com";
+const triggerURL = "https://api.thecodemesh.online/api/v1/trigger/proxy/617ffaafe1761600127f9be4/admin/orders.json?shop=testtheme34.myshopify.com";
 
 const updateQueryStringParameter = (uri, key, value) => {
   var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
@@ -16,13 +15,13 @@ const updateQueryStringParameter = (uri, key, value) => {
 }
 
 function Home() {
-  const [products, setProducts] = useState([])
-  const codeMeshTokens = JSON.parse(localStorage.getItem('codeMeshTokens', {}));
+  const [data, setData] = useState([])
+  const theCodeMeshTokens = JSON.parse(localStorage.getItem('theCodeMeshTokens', {}));
   React.useEffect(() => {
     axios.get(`${triggerURL}`, {
-      headers: codeMeshTokens
+      headers: theCodeMeshTokens
     }).then((response) => {
-      setProducts(response.data.products);
+      setData(response.data);
     }).catch(error => {
       //handle generic errors
       console.log(error)
@@ -38,7 +37,7 @@ function Home() {
     });
   }, []);
   return <React.Fragment >
-    {products.map((product) => <div>{product.title}</div>)}
+     <div>{JSON.stringify(data)}</div>
   </React.Fragment>;
 }
 export default Home;
