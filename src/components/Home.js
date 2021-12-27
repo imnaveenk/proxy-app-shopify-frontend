@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-const triggerURL = "https://api.thecodemesh.online/api/v1/trigger/proxy/617ffaafe1761600127f9be4/admin/orders.json?shop=testtheme34.myshopify.com";
+const triggerURL = "https://api.thecodemesh.online/api/v1/trigger/proxy/617ffaafe1761600127f9be4/admin/products.json?shop=testtheme34.myshopify.com";
 
 const updateQueryStringParameter = (uri, key, value) => {
   var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
@@ -27,12 +27,17 @@ function Home() {
       console.log(error)
       if (error.response.data.code === 400 || error.response.data.code === 401) {
         const scopeKey = error.response.data.message.scopeKey
-        let loginUrl;
+        let loginUrl = error.response.data.message.loginUrl;
         if (scopeKey) {
-          loginUrl = updateQueryStringParameter(error.response.data.message.loginUrl, scopeKey, "write_orders,write_products,write_customers")
+          //update with required scope here
+          loginUrl = updateQueryStringParameter(loginUrl, scopeKey, "write_products")
         }
-        // console.log("loginUrl ", loginUrl)
+        if(loginUrl) {
         window.open(loginUrl, '_blank');
+        }else{
+          //silent fail
+          console.log("TheCodeMesh integration failed, trace : ", error.response.data.message.trace)
+        }
       }
     });
   }, []);
